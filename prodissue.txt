@@ -1,0 +1,92 @@
+Ream time production issue:
+Most Common Real-Time Root Causes
+
+In real projects, I’ve seen these most often:
+
+✅ Service selector mismatch
+
+✅ Ingress misconfiguration
+
+✅ Load balancer health check wrong path
+
+✅ Security group blocked port
+
+✅ DNS misconfiguration
+
+✅ NetworkPolicy blocking ingress
+
+✅ TLS certificate expired
+
+####################################
+The issue was inconsistent. Some users could access the platform, others couldn’t. That made it harder to diagnose.
+Our first assumptions were predictable:
+
+Load balancer misconfiguration
+Firewall rules
+Recent deployment bug
+SSL issue
+All checks passed.
+Then we verified DNS resolution manually.
+That’s when we found the real problem.
+
+The domain had recently been migrated to new infrastructure. However, the DNS TTL (Time To Live) was set too high. 
+Several ISPs and recursive resolvers were still caching the old IP address.
+
+
+STEPS to diagnose:
+
+Step 1: Clarify the Architecture
+First I would confirm:
+Is it exposed via Service (ClusterIP / NodePort / LoadBalancer)?
+Is there an Ingress Controller?
+
+Step 2: Check Kubernetes Service
+
+kubectl get svc
+kubectl describe svc <service-name>
+kubectl get endpoints <service-name>
+
+If Endpoints are empty → Service selector mismatch.
+
+Step 3: Check Ingress
+kubectl get ingress
+kubectl describe ingress <name>
+Check:
+
+Hostname correct?                       
+Backend service correct?
+TLS certificate valid?
+
+Possible issues:
+
+502 Bad Gateway
+503 Service Unavailable
+Wrong path routing
+
+
+Step 4: DNS Issue
+Users say "Server not reachable" → Could be DNS.
+
+nslookup yourdomain.com
+
+Step 6: Network Policy Blocking Traffic
+kubectl get networkpolicy
+
+Sometimes:
+
+Ingress traffic blocked
+Namespace isolation enabled
+Only internal pods allowed
+
+Step 7: Node-Level Issue
+
+kubectl get nodes
+Possible:
+
+Node NotReady
+
+kube-proxy failure
+
+CNI plugin crash (Calico/Weave)
+
+If CNI fails → Service traffic fails even if pods are healthy.
