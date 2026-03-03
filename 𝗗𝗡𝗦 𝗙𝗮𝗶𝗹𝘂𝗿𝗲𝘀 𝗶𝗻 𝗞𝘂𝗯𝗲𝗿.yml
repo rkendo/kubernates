@@ -1,0 +1,46 @@
+𝗗𝗡𝗦 𝗙𝗮𝗶𝗹𝘂𝗿𝗲𝘀 𝗶𝗻 𝗞𝘂𝗯𝗲𝗿𝗻𝗲𝘁𝗲𝘀 — 𝗥𝗖𝗔 & 𝗙𝗶𝘅
+
+If pods can’t talk to services, don’t assume the service is down.
+Check DNS first.
+
+In Kubernetes, service discovery depends on CoreDNS.
+ If DNS fails, applications throw:
+• no such host
+ • temporary failure in name resolution
+ • intermittent timeouts
+And everything looks healthy.
+
+
+Flow:
+𝗣𝗼𝗱 → 𝗖𝗼𝗿𝗲𝗗𝗡𝗦 → 𝗦𝗲𝗿𝘃𝗶𝗰𝗲 𝗜𝗣 → 𝗸𝘂𝗯𝗲-𝗽𝗿𝗼𝘅𝘆 → 𝗧𝗮𝗿𝗴𝗲𝘁 𝗣𝗼𝗱
+
+𝗛𝗼𝘄 𝘁𝗼 𝗗𝗲𝗯𝘂𝗴 𝗜𝘁
+From inside a pod:
+𝘬𝘶𝘣𝘦𝘤𝘵𝘭 𝘦𝘹𝘦𝘤 -𝘪𝘵 𝘱𝘰𝘥 -- 𝘯𝘴𝘭𝘰𝘰𝘬𝘶𝘱 𝘴𝘦𝘳𝘷𝘪𝘤𝘦-𝘯𝘢𝘮𝘦
+
+𝗠𝗼𝘀𝘁 𝗖𝗼𝗺𝗺𝗼𝗻 𝗥𝗼𝗼𝘁 𝗖𝗮𝘂𝘀𝗲𝘀
+- CoreDNS OOMKilled
+- Under load, memory spikes → CoreDNS restarts → random resolution failures.
+- CoreDNS not running
+- CrashLoopBackOff or Pending in kube-system.
+- NetworkPolicy blocking port 53
+- DNS needs UDP/TCP 53.
+- Wrong dnsPolicy
+- Cross-namespace naming mistake
+Use full FQDN if calling across namespaces.
+
+Check:
+• /etc/resolv.conf
+ • CoreDNS logs
+ • CoreDNS memory usage
+ • Network policies
+
+Production Fix
+• Increase CoreDNS memory limits
+• Scale CoreDNS replicas
+• Monitor DNS latency
+• Never ignore CoreDNS restarts
+
+Production lesson:
+When Kubernetes networking looks broken,
+DNS is often the real problem.
