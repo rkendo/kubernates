@@ -1,0 +1,6 @@
+🟢 Helm
+• A Helm release failed. What are your debugging steps?
+• Helm values were changed but the application didn’t update. Why?
+• How do you rollback a Helm release safely?
+• How do you manage Helm values across multiple environments?
+• When should you avoid using Helm?
