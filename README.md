@@ -1,4 +1,4 @@
-# The Kubernetes Control Plane, often called the Master or Control Node, is a set of components that collectively manage the state of a Kubernetes cluster.
+<img width="1400" height="646" alt="image" src="https://github.com/user-attachments/assets/5090bfae-03ba-419b-8554-08ccbb233bc8" /># The Kubernetes Control Plane, often called the Master or Control Node, is a set of components that collectively manage the state of a Kubernetes cluster.
 It acts as the brain of the cluster, making worldwide decisions about the cluster (for example, scheduling), as well as detecting and responding to cluster events
 
 Components of Control Plane:
@@ -46,6 +46,8 @@ It assigns the Pod — but does not run it.
 On each node, Kubelet ensures containers are running as declared.
 It talks to the container runtime (docker / containerd / CRI-O).
 It reports status back to the API Server.
+<img width="1400" height="646" alt="image" src="https://github.com/user-attachments/assets/6cd52797-cfc9-41cf-834c-650e42f73996" />
 
 6️⃣ kube-proxy – Networking Layer
 It maintains networking rules so Services can load balance traffic across Pods.
+
