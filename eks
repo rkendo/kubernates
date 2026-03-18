@@ -1,0 +1,19 @@
+AWS Architecture Series: ECS vs EKS — Choosing the Right Container Platform
+Introduction
+Containerization has become a core part of modern cloud-native architectures. Running applications in containers improves portability, scalability, and deployment consistency.
+
+In AWS, container workloads are managed using two primary services:
+
+Amazon ECS (Elastic Container Service)
+Amazon EKS (Elastic Kubernetes Service)
+Both services allow teams to run containerized applications, but they differ in terms of architecture, complexity, and use cases.
+
+For DevOps engineers, choosing between ECS and EKS is an important architectural decision.
+
+In this article, we compare:
+
+ECS and EKS architecture
+Key differences
+Use cases
+When to choose each service
+What is Amazon ECS?
