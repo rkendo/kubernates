@@ -1,0 +1,17 @@
+JWT Authentication in Microservices using API Gateway: 
+
+What actually happens when you securely call an API in a microservices architecture?
+
+Here’s a simplified flow of JWT authentication using an API Gateway:
+
+🔐 User logs in → Identity Server validates credentials
+🎟️ JWT token is generated and it is issued to the client
+🌐 Client sends API request with JWT
+🚪 API Gateway validates the token from Identity server
+🔄 Request is routed to respective microservices
+
+✅ No session storage (stateless)
+✅ Centralized security at gateway
+✅ Scalable for microservices
+
+This pattern is widely used in modern cloud architectures to ensure secure and efficient communication between services.
