@@ -1,0 +1,60 @@
+1. Linux Essentials
+• sudo !! - Add sudo to the last command
+• ctrl + r - Search history fast
+• watch -n 2 cmd - Auto-refresh output
+• alias - Quick shortcuts
+• man <command> - Quick built-in help
+
+2. Process & System Checks
+• ps aux | grep - Find processes
+• lsof -i :port - Identify port owner
+• df -h - Disk usage
+• free -h - Memory snapshot
+• htop - Resource overview
+• dmesg -T - Kernel events
+• kill -9 pid - Kill process
+
+3. Kubernetes Basics
+• kubectl get pods -A - Quick overview
+• kubectl describe pod - Events/errors
+• kubectl logs <pod> - App logs
+• kubectl exec -it <pod> - Inspect container
+• kubectl top - Resource stats
+• kubectl rollout restart - Restart workloads
+
+4. Container Toolkit
+• docker ps - Running containers
+• docker logs <id> - Debug logs
+• docker exec -it <id> - Shell inside
+• docker stats - Resource usage
+• docker inspect <id> - Detailed metadata
+• docker system prune - Cleanup
+
+5. Log Hunters
+• grep - Filter text
+• awk '{print $1,$9}' access.log - extract pattern & parse field
+• sed - Inline edits
+• tail -f - Live logs
+• less +F - Better tail mode
+• journalctl -u <service> - Systemd logs
+
+6. Network Checks
+• curl -v - HTTP debugging
+• dig + short - DNS lookup
+• ss -tunlp - Socket view
+• traceroute - Path tracing
+• tcpdump -i any - Packet capture
+
+7. File Shortcuts
+• find . -name "*.yaml" - Locate files
+• rsync -avz - Efficient sync
+• tar -xvf - Extract archives
+• ln -s - Create symlinks
+• chmod +x - Make executable
+
+8. Performance Issues
+• top -c - View heavy processes
+• iostat -xz 1 - Disk performance
+• sar -n DEV 1 - Network stats
+• uptime - Load averages
+• strace -p <pid> - Syscall tracing
