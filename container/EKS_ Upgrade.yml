@@ -1,0 +1,22 @@
+EKS Upgrade Story: From 1.32 → 1.34 with Zero Downtime
+
+Last week, we planned a production upgrade of our Amazon Web Services (AWS) EKS cluster, with one strict rule: no downtime.
+
+We started with deep validation checking deprecated APIs, Helm charts, CRDs, and ensuring all add-ons were compatible. Once confident, we moved forward.
+
+The journey began with the control plane upgrade to 1.34. Since AWS manages it, the process was smooth, but we closely monitored cluster health to ensure stability.
+
+Next came the add-ons upgrad,  VPC CNI, CoreDNS, and kube-proxy. This step was critical to ensure networking and DNS continued to function without issues on the new version.
+
+With the foundation ready, we moved to worker nodes. Instead of risking in-place upgrades, we followed a blue-green approach, introducing new nodes running 1.34 while keeping the old ones active.
+
+Then came the most sensitive phase, workload migration. We gradually shifted applications to the new nodes using controlled rolling updates, ensuring every service stayed available throughout.
+
+Throughout the process, monitoring was our safety net, tracking metrics, logs, and application health in real time.
+
+Once everything was stable and fully migrated, we decommissioned the old nodes, leaving the cluster fully running on 1.34.
+i) No downtime
+ii) No customer impact
+iii) Smooth and predictable upgrade
+
+Sometimes, the best upgrades are the ones your users never notice.
