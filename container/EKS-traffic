@@ -1,0 +1,16 @@
+he request lifecycle starts at the user browser and reaches Amazon Route 53, where DNS resolution maps the application domain to an Application Load Balancer. Route 53 enables health-based routing, failover strategies, and multi-region expansion without changing application logic.
+
+The Application Load Balancer is deployed in a public subnet and acts as the only internet-facing entry point. It terminates TLS, applies security group rules, and evaluates listener conditions. Host-based and path-based routing allow multiple applications or microservices to share the same load balancer while remaining logically isolated.
+
+Traffic is forwarded to ALB target groups associated with EKS worker nodes running inside private subnets. These nodes have no direct internet exposure. Outbound connectivity, such as container image pulls or third-party API access, is handled through a NAT Gateway, preserving isolation while maintaining operational flexibility.
+
+Within the cluster, the NGINX Ingress Controller translates external traffic into Kubernetes-native routing rules. It forwards requests to ClusterIP services, which load balance traffic across healthy pods. This layer enables blue-green deployments, canary releases, and zero-downtime rollouts commonly required in production environments.
+
+Application pods communicate with Amazon RDS hosted in a dedicated database subnet with no internet gateway access. Security groups strictly allow traffic only from application nodes, protecting the database from unintended exposure.
+
+Security is enforced through multiple layers. Network ACLs protect subnets, security groups control traffic between components, and Kubernetes policies govern pod behavior. This defense-in-depth approach ensures resilience, compliance, and operational confidence.
+
+Final Note:
+In mature production environments, this architecture works because every layer has a clearly defined responsibility and failure boundary. Internet traffic is terminated at the ALB, compute remains isolated in private subnets, and data persistence is strictly confined to database networks. NAT, security groups, and NACLs collectively reduce blast radius during incidents. When combined with proper observability, incident response, and controlled release strategies, this model enables teams to operate Kubernetes on AWS with predictability, resilience, and long-term operational confidence.This design reflects how real production EKS platforms balance scalability, security, and operational control.
+
+![alt text](<eks traffic flow.jpeg>)

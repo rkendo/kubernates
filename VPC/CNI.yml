@@ -1,0 +1,40 @@
+Networking in Kubernetes AWS EKS – VPC CNI
+
+In Amazon EKS, pod networking is handled using the AWS VPC CNI plugin.
+
+🔹 What is AWS VPC CNI?
+It is the default networking plugin for EKS
+Enables pod-to-pod communication
+Assigns VPC subnet IPs directly to pods
+Runs as a Daemon set on every node.
+
+👉 Daemon set means:
+Similar to a Deployment
+But ensures one pod runs on every node
+Used for networking, logging, and monitoring
+If pods face network issues, CNI logs are checked first for debugging
+
+🔹 ENI (Elastic Network Interface)
+Pods receive IPs using Elastic Network Interface
+ENI acts like a virtual Ethernet card attached to an EC2 instance
+The number of ENIs and IPs depends on the Amazon EC2 instance type.
+
+🔹Each ENI has one primary IP for the node and multiple secondary IPs that are assigned to pods by the AWS VPC CNI.
+
+🔹 IP Allocation Flow
+VPC CNI assigns pod IPs from the VPC subnet
+Each node has a limited number of ENIs
+Each ENI supports a limited number of secondary IPs
+Pods get their IPs directly from AWS networking (no overlay network)
+
+🔹 Prefix Delegation (Solves IP Exhaustion)
+When subnet IPs are limited, prefix delegation is enabled.
+Each ENI can have 16 prefixes
+Each prefix provides 30 IPs
+👉 16 × 30 = 480 pod IPs per ENI
+Greatly improves pod density and scalability
+
+🔹 Pod Lifecycle & IP Management
+When a pod is terminated, its IP is released back to the IP pool
+kube-proxy updates routing rules for new pod IPs
+VPC CNI efficiently reuses IPs
