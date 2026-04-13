@@ -1,0 +1,35 @@
+💡 What is CNI?
+CNI is responsible for configuring networking for pods. It enables:
+Pod-to-Pod communication
+Pod-to-Service access
+Pod-to-external traffic
+Without a properly configured CNI plugin, pods may run—but communication will fail.
+👇 I’ve added a simple visual at the end of this post to help illustrate how CNI works
+🔥 Core concepts every DevOps engineer should understand
+✅ Each Pod gets its own IP
+Kubernetes follows a flat networking model where pods can communicate across nodes without NAT (depending on the CNI implementation).
+✅ CNI is not built into Kubernetes
+You must install a CNI plugin such as:
+Calico (supports Network Policies and scalability)
+Flannel (simple and easy to set up)
+Cilium (advanced networking using eBPF)
+Each plugin has different trade-offs in terms of performance, features, and complexity.
+
+⚡ Practical debugging perspective
+When troubleshooting Kubernetes issues, networking should be one of the first things to check:
+Pods unable to communicate → Verify CNI configuration
+Services not reachable → Check kube-proxy and networking rules
+DNS issues → Validate CoreDNS and network paths
+Cross-node communication issues → Inspect overlay networking
+Many Kubernetes issues that appear complex are often related to networking.
+⚙️ How CNI works (simplified)
+A pod is scheduled to a node
+Kubelet invokes the CNI plugin
+The plugin assigns an IP address
+Network interfaces and routes are configured
+The pod becomes reachable within the cluster
+💭 Pro Tip
+Always validate pod networking early:
+kubectl get pods -o wide
+Review pod IPs and node distribution—this often helps identify networking issues quickly.
+Understanding Kubernetes networking is essential for building reliable systems—not optional.
